@@ -67,6 +67,10 @@ void customerRegistration();
 void customerLogin();
 void customerScreen();
 void adminScreen();
+void insurancePolicy();
+void claimRegistration();
+void renewalScreen();
+void benefitScreen();
 void policyRegistration(int);
 
 int main()
@@ -94,7 +98,7 @@ int main_menu()
 {
 	int choice;
 
-	cout << "\nMain Menu:";
+	cout << "\nMain Menu :\n";
 	cout << "\n1 Customer registration";
 	cout << "\n2 Customer login";
 	cout << "\n3 Administration login";
@@ -141,7 +145,7 @@ void customerRegistration()
 	getline(cin, dummy);
 
 	//write into file
-	ofstream file("Customer_Registration.txt", ios::out | ios::app);
+	ofstream file("Customer_Registration.txt", ios::out | ios::app | ios::binary);
 
 	file << customer.first_name << endl;
 	file << customer.last_name << endl;
@@ -175,7 +179,7 @@ void customerLogin()
 		getline(cin, dummy);
 
 		//opening the file in read mode
-		ifstream file("Customer_registration.txt", ios::in);
+		ifstream file("Customer_registration.txt", ios::in | ios::binary);
 
 		bool loginSucceeded = false;
 		while (!file.eof())
@@ -218,6 +222,38 @@ void customerLogin()
 	}
 
 	customerScreen();
+}
+
+void customerScreen()
+{
+	int choice;
+	while (true)
+	{
+		cout << "\nCustomer Screen :\n";
+		cout << "\n1. Policy and insurance application process";
+		cout << "\n2. Claim";
+		cout << "\n3. Renewal";
+		cout << "\n4. Benefits of NZ insurance";
+		cout << "\n5. Exit";
+
+		cin >> choice;
+		string dummy;
+		getline(cin, dummy);
+
+		if (choice == 1) insurancePolicy();
+		else if (choice == 2) claimRegistration();
+		else if (choice == 3) renewalScreen();
+		else if (choice == 4) benefitScreen();
+		else if (choice == 5) break;
+	}
+}
+
+void benefitScreen()
+{
+	cout << "\nNew sign-up discounts";
+	cout << "\nMulti policy discount";
+	cout << "\nRenewal discount";
+	cout << "\ndiscount for reviewing the insurance and introducing friends or family discount";
 }
 
 void policyRegistration(int policy_num) {
