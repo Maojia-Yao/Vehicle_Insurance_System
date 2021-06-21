@@ -1,0 +1,6 @@
+﻿  NZ_Vehicle_Insurance_System.cpp
+NZ_Vehicle_Insurance_System.obj : error LNK2019: unresolved external symbol "void __cdecl adminScreen(void)" (?adminScreen@@YAXXZ) referenced in function _main
+NZ_Vehicle_Insurance_System.obj : error LNK2019: unresolved external symbol "void __cdecl insurancePolicy(void)" (?insurancePolicy@@YAXXZ) referenced in function "void __cdecl customerScreen(void)" (?customerScreen@@YAXXZ)
+NZ_Vehicle_Insurance_System.obj : error LNK2019: unresolved external symbol "void __cdecl claimRegistration(void)" (?claimRegistration@@YAXXZ) referenced in function "void __cdecl customerScreen(void)" (?customerScreen@@YAXXZ)
+NZ_Vehicle_Insurance_System.obj : error LNK2019: unresolved external symbol "void __cdecl renewalScreen(void)" (?renewalScreen@@YAXXZ) referenced in function "void __cdecl customerScreen(void)" (?customerScreen@@YAXXZ)
+C:\Users\270114024\OneDrive - UP Education\Desktop\assessment\Vehicle_Insurance_System\Debug\NZ_Vehicle_Insurance_System.exe : fatal error LNK1120: 4 unresolved externals

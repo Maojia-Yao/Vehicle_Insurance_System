@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cctype>
 using namespace std;
 
 struct Customer
@@ -29,6 +30,7 @@ struct Administrator
 struct Policy
 {
 	int policy_no;
+	int car_value;
 	string first_name;
 	string last_name;
 	string dob;
@@ -44,12 +46,14 @@ struct Policy
 struct Claim
 {
 	int policy_no;
-	string full_name;
+	string first_name;
+	string last_name;
 	string date;
 	string time;
-	string description;
-	string detail;
-	string contact;
+	char description[200];
+	char detail[200];
+	string contact_no;
+	string email;
 };
 
 struct Renewal
@@ -303,10 +307,191 @@ void policyRegistration(int policy_num) {
 	cin >> p.vehicle_name;
 	cout << "\nEnter your vehicle model : ";
 	cin >> p.model;
+	cout << "\nEnter how much you want to insure your car for : ";
+	cin >> p.car_value;
 
 	policies.open("policies.dat", ios::out | ios::app | ios::binary);
 
 	policies.write(reinterpret_cast<char*>(&p), sizeof(p));
 
 	policies.close();
+}
+
+void claimRegistration()
+{
+	char restart, end;
+	fstream policies, claims;
+	Claim claim;
+
+	do
+	{
+		Claim claim;
+		Policy p;
+
+
+
+		cout << "\nEnter your policy number : ";
+		cin >> claim.policy_no;
+
+		policies.open("policies.dat", ios::in | ios::binary);
+
+		while (policies.read(reinterpret_cast<char*>(&p), sizeof(p)))
+		{
+			if (p.policy_no = claim.policy_no)
+			{
+				policies.read(reinterpret_cast<char*>(&p), sizeof(p));
+				claim.first_name = p.first_name;
+				claim.last_name = p.last_name;
+				claim.email = p.email;
+				claim.contact_no = p.contact_no;
+			}
+		}
+		policies.close();
+		cout << "Enter the date of the incident";
+		cin >> claim.date;
+		cout << "Enter the time of the incident";
+		cin >> claim.time;
+		cout << "Enter the incident description (200 character limit): ";
+		cin.ignore();
+		cin.getline(claim.description, 200);
+		cout << "Enter the complaint details (200 character limit) : ";
+		cin.getline(claim.detail, 200);
+
+
+		cout << "\n\nSummary of Claim\n----------------\n\n";
+		cout << "Policy Number : " << claim.policy_no << "\n";
+		cout << "Name : " << claim.first_name << " " << claim.last_name << "\n";
+		cout << "Date of incident : " << claim.date << "\n";
+		cout << "Time of incident : " << claim.time << "\n";
+		cout << "Claim Description : ";
+		for (int i = 0; i < strlen(claim.description); i++)
+		{
+			cout << claim.description[i];
+		}
+		cout << "\n\nComplaint detail : ";
+		for (int i = 0; i < strlen(claim.detail); i++)
+		{
+			cout << claim.detail[i];
+		}
+		cout << "\n\nPhone number : " << claim.contact_no << "\n";
+		cout << "Email address : " << claim.email << "\n";
+
+		cout << "\n\nIs this information correct? (y/n) : ";
+		cin >> restart;
+		if (tolower(restart) != 'y')
+		{
+			cout << "\nWould you like to re-enter you're details (y/n) : ";
+			cin >> end;
+			if (tolower(end) != 'y')
+			{
+				break;
+			}
+		}
+
+	} while (tolower(restart) != 'y');
+
+	if (tolower(restart) != 'y')
+	{
+		claims.open("claims.dat", ios::out | ios::app | ios::binary);
+		claims.write(reinterpret_cast<char*>(&claim), sizeof(claim));
+		claims.close();
+	}
+}
+
+void adminScreen()
+{
+	int choice;
+	fstream file;
+	Customer customer;
+	Claim claim;
+	Renewal renewals;
+	
+	do
+	{
+		int i = 1;
+		cout << "\n\tAdmin Screen\n\t------------\n\n";
+		cout << " 1. Customer report\n";
+		cout << " 2. Weekly claim report\n";
+		cout << " 3. Weekly renewal report\n";
+		cout << " 4. Weekly new registration report\n";
+		cout << " 5. Update policy information and publish the special discounts\n";
+		cout << " 6. Exit\n";
+
+		cout << "\nPlease enter your choice : ";
+		cin >> choice;
+
+		switch (choice)
+		{
+		case 1:
+		{
+			cout << "\n\tList of customers\n\t-----------------\n\n";
+			file.open("Customer_registration.txt", ios::in | ios::binary);
+			while (!file.eof())
+			{
+				cout << "Customer " << i << " : ";
+				file >> customer.first_name;
+				file >> customer.last_name;
+				cout << "\nName : " << customer.first_name << " " << customer.last_name;
+				file >> customer.dob;
+				cout << "\nDate of birth : " << customer.dob;
+				file >> customer.gender;
+				cout << "\nGender : " << customer.gender;
+				file >> customer.contact_no;
+				cout << "\nContact Number : " << customer.contact_no;
+				file >> customer.email;
+				cout << "\nEmail : " << customer.email;
+				file >> customer.address;
+				cout << "\nAddress : " << customer.address;
+				file >> customer.vehicleRegNumber;
+				cout << "\nVehicle registration number : " << customer.vehicleRegNumber;
+				file >> customer.username;
+				cout << "\nUsername : " << customer.username;
+				file >> customer.password;
+				cout << "\n\n";
+				i++;
+			}
+			file.close();
+			system("pause");
+			break;
+
+		}
+		case 2:
+		{
+			cout << "\n\tWeekly claim report\n\t---------------------\n\n";
+			file.open("claims.dat", ios::binary | ios::in);
+			while (file.read(reinterpret_cast<char*>(&claim), sizeof(claim)))
+			{
+				cout << "Claim number " << i << " : ";
+				cout << "\nPolicy number : " << claim.policy_no;
+				cout << "\nFull Name : " << claim.first_name << " " << claim.last_name;
+				cout << "\nDate of incident : " << claim.date;
+				cout << "\nTime of incident : " << claim.time;
+				cout << "\nIncident description : " << claim.description;
+				cout << "\n\nComplaint Details : " << claim.detail;
+				cout << "\n\nContact Number : " << claim.contact_no;
+				cout << "\nEmail : " << claim.email;
+				cout << "\n\n";
+				i++;
+			}
+			file.close();
+			break;
+		}
+		case 3:
+		{
+
+		}
+		case 4:
+		{
+
+		}
+		case 5:
+		{
+
+		}
+		case 6: break;
+		default:
+			cout << "Please enter a valid choice"; break;
+		}
+	} while (choice != 6);
+
 }
