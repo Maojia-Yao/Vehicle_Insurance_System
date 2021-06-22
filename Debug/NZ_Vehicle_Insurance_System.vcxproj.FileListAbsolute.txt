@@ -1,0 +1,2 @@
+C:\Users\Administrator\source\repos\NZ_Vehicle_Insurance_System\Vehicle_Insurance_System\Debug\NZ_Vehicle_Insurance_System.exe
+C:\Users\Administrator\source\repos\NZ_Vehicle_Insurance_System\Vehicle_Insurance_System\Debug\NZ_Vehicle_Insurance_System.pdb
